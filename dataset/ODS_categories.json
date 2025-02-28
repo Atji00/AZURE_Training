@@ -1,0 +1,33 @@
+{
+	"name": "ODS_categories",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_DbSDA2025",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ODSTables"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Reference_Categorie",
+				"type": "varchar"
+			},
+			{
+				"name": "Categorie",
+				"type": "varchar"
+			},
+			{
+				"name": "Description",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "ODS",
+			"table": "categorie"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

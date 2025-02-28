@@ -1,0 +1,110 @@
+{
+	"name": "flow_dim_produit",
+	"properties": {
+		"description": "injecte transformed data into dim_enseigne from DataWareHouse",
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ODS_produits",
+						"type": "DatasetReference"
+					},
+					"name": "ODSproduit"
+				},
+				{
+					"dataset": {
+						"referenceName": "ODS_categories",
+						"type": "DatasetReference"
+					},
+					"name": "ODScategorie"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DIM_produit",
+						"type": "DatasetReference"
+					},
+					"name": "Dimproduct"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Reference_Produit as string,",
+				"          Nom as string,",
+				"          Reference_Categorie as string,",
+				"          Prix as decimal(18,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ODSproduit",
+				"source(output(",
+				"          Reference_Categorie as string,",
+				"          Categorie as string,",
+				"          Description as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ODScategorie",
+				"ODSproduit, ODScategorie join(ODSproduit@Reference_Categorie == ODScategorie@Reference_Categorie,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          Reference_Produit,",
+				"          Nom,",
+				"          Prix,",
+				"          Reference_Categorie = ODSproduit@Reference_Categorie,",
+				"          Categorie,",
+				"          Description",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 alterRow(upsertIf(1==1)) ~> alterRow1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          produit_rowid as integer,",
+				"          reference_produit as string,",
+				"          nom as string,",
+				"          prix as integer,",
+				"          reference_categorie as string,",
+				"          categorie as string,",
+				"          description as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:true,",
+				"     keys:['reference_produit'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          reference_produit = Reference_Produit,",
+				"          nom = Nom,",
+				"          prix = Prix,",
+				"          reference_categorie = Reference_Categorie,",
+				"          categorie = Categorie,",
+				"          description = Description",
+				"     )) ~> Dimproduct"
+			]
+		}
+	}
+}
