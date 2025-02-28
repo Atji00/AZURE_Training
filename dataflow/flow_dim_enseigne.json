@@ -1,0 +1,67 @@
+{
+	"name": "flow_dim_enseigne",
+	"properties": {
+		"description": "inject transformed data into dim_enseigne",
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ODS_enseignes",
+						"type": "DatasetReference"
+					},
+					"name": "ODSenseigne"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_DIM_enseigne",
+						"type": "DatasetReference"
+					},
+					"name": "SinkDIMenseigne"
+				}
+			],
+			"transformations": [
+				{
+					"name": "UpsertODSenseigne",
+					"description": "data updating for new rows"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          enseigne as string,",
+				"          ville as string,",
+				"          adresse as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ODSenseigne",
+				"ODSenseigne alterRow(upsertIf(1==1)) ~> UpsertODSenseigne",
+				"UpsertODSenseigne sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          enseigne_rowid as integer,",
+				"          enseigne as string,",
+				"          ville as string,",
+				"          adresse as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:false,",
+				"     upsertable:true,",
+				"     keys:['enseigne'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          enseigne,",
+				"          ville,",
+				"          adresse",
+				"     )) ~> SinkDIMenseigne"
+			]
+		}
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"name": "DS_DIM_enseigne",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_DbSDA2025",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DWH(DataWareHouseTables)"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "enseigne_rowid",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "enseigne",
+				"type": "varchar"
+			},
+			{
+				"name": "ville",
+				"type": "varchar"
+			},
+			{
+				"name": "adresse",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "DWH",
+			"table": "dim_enseigne"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
