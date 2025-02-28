@@ -1,0 +1,9 @@
+{
+	"name": "factory2025",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c77b3d8c-ad55-4761-aeb5-52d0f37b93df",
+		"tenantId": "8c6f9078-037e-4261-a583-52a944e55f7f"
+	}
+}
