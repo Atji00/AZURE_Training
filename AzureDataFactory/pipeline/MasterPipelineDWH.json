@@ -1,0 +1,41 @@
+{
+	"name": "MasterPipelineDWH",
+	"properties": {
+		"description": "To inject transform and cleaned data into my DataWareHouse",
+		"activities": [
+			{
+				"name": "flowPipelineProduit",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "flowPipelineProduit",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "flowPipelineEnseigne",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "flowPipelineEnseigne",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"annotations": []
+	}
+}
