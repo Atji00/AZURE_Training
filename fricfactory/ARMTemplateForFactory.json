@@ -37,6 +37,139 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/MasterPipeODS')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PipeODSVente",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeODSVente",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeODSProduit",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeODSDepense",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeODSProduit",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeODSMagasin",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeODSClient",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeODSMagasin",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeODSDepense",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeODSVente",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeODSDepense",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeODSClient",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeODSProduit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeODSClient",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PipeODSVente')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeODSProduit')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeODSMagasin')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeODSDepense')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeODSClient')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/PipeODSClient')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
