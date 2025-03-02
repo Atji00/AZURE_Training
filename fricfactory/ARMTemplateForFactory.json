@@ -37,6 +37,57 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ADL_Clients')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FricDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ADL(AzureDataLake)-Tables"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "clients",
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "clients.xls",
+						"fileSystem": "datalake"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FricDataLakeStorage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ADL_Depenses')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
