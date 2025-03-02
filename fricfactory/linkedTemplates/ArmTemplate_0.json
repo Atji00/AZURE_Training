@@ -448,6 +448,47 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ODS_Magasins')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FricSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ODS(Operational Data Store)-Tables"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID_Magasin",
+						"type": "varchar"
+					},
+					{
+						"name": "Nom_Magasin",
+						"type": "varchar"
+					},
+					{
+						"name": "Ville",
+						"type": "varchar"
+					},
+					{
+						"name": "Pays",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "ODS",
+					"table": "magasins"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FricSqlDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ODS_Produits')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
