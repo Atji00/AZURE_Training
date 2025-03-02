@@ -15,13 +15,13 @@
 			"value": "https://fricdatalake.dfs.core.windows.net/"
 		},
 		"FricSqlDatabase_properties_typeProperties_server": {
-			"value": "serverfric2025.database.windows.net"
+			"value": "serverfric.database.windows.net"
 		},
 		"FricSqlDatabase_properties_typeProperties_database": {
-			"value": "fricdatabase"
+			"value": "fricSqlDatabase"
 		},
 		"FricSqlDatabase_properties_typeProperties_userName": {
-			"value": "admin@fric"
+			"value": "adminfric"
 		},
 		"containerUri": {
 			"value": ""

@@ -21,15 +21,15 @@
 		},
 		"FricSqlDatabase_properties_typeProperties_server": {
 			"type": "string",
-			"defaultValue": "serverfric2025.database.windows.net"
+			"defaultValue": "serverfric.database.windows.net"
 		},
 		"FricSqlDatabase_properties_typeProperties_database": {
 			"type": "string",
-			"defaultValue": "fricdatabase"
+			"defaultValue": "fricSqlDatabase"
 		},
 		"FricSqlDatabase_properties_typeProperties_userName": {
 			"type": "string",
-			"defaultValue": "admin@fric"
+			"defaultValue": "adminfric"
 		},
 		"containerUri": {
 			"type": "string",
