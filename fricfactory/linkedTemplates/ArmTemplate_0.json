@@ -1,0 +1,143 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "fricfactory"
+		},
+		"FricDataLakeStorage_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'FricDataLakeStorage'"
+		},
+		"FricSqlDatabase_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FricSqlDatabase'"
+		},
+		"FricDataLakeStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://fricdatalake.dfs.core.windows.net/"
+		},
+		"FricSqlDatabase_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "serverfric2025.database.windows.net"
+		},
+		"FricSqlDatabase_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "fricdatabase"
+		},
+		"FricSqlDatabase_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "admin@fric"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/FricDataLakeStorage')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('FricDataLakeStorage_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('FricDataLakeStorage_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/FricSqlDatabase')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('FricSqlDatabase_properties_typeProperties_server')]",
+					"database": "[parameters('FricSqlDatabase_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('FricSqlDatabase_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('FricSqlDatabase_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ADL_Ventes')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FricDataLakeStorage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "ADL(AzureDataLake)-Tables"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "ventes.csv",
+						"fileSystem": "datalake"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ID_Vente",
+						"type": "String"
+					},
+					{
+						"name": "Date_Vente",
+						"type": "String"
+					},
+					{
+						"name": "ID_Client",
+						"type": "String"
+					},
+					{
+						"name": "ID_Produit",
+						"type": "String"
+					},
+					{
+						"name": "Quantite",
+						"type": "String"
+					},
+					{
+						"name": "Prix_Unitaire",
+						"type": "String"
+					},
+					{
+						"name": "Mode_Paiement",
+						"type": "String"
+					},
+					{
+						"name": "ID_Magasin",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FricDataLakeStorage')]"
+			]
+		}
+	]
+}
