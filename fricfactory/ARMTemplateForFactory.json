@@ -37,6 +37,139 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/MasterPipeDWH')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "PipeDWHClient",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeDWHClient",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeDWHProduit",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeDWHClient",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeDWHProduit",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeDWHMagasin",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeDWHProduit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeDWHMagasin",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeDWHDepense",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeDWHMagasin",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeDWHDepense",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "PipeDWHVente",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "PipeDWHDepense",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PipeDWHVente",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/PipeDWHClient')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeDWHProduit')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeDWHMagasin')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeDWHDepense')]",
+				"[concat(variables('factoryId'), '/pipelines/PipeDWHVente')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MasterPipeODS')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
