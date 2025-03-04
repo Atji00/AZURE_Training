@@ -1517,14 +1517,7 @@
 					{
 						"name": "PipeDWHProduit",
 						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "PipeDWHClient",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"secureInput": false
 						},
@@ -1541,14 +1534,7 @@
 					{
 						"name": "PipeDWHMagasin",
 						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "PipeDWHProduit",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"secureInput": false
 						},
@@ -1567,7 +1553,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PipeDWHMagasin",
+								"activity": "DimTablesWaiter",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1591,7 +1577,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "PipeDWHDepense",
+								"activity": "FactDepenseWaiter",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1608,6 +1594,50 @@
 							},
 							"waitOnCompletion": true,
 							"parameters": {}
+						}
+					},
+					{
+						"name": "DimTablesWaiter",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "PipeDWHClient",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "PipeDWHProduit",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "PipeDWHMagasin",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
+						}
+					},
+					{
+						"name": "FactDepenseWaiter",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "PipeDWHDepense",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 1
 						}
 					}
 				],
