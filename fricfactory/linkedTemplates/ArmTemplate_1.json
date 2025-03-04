@@ -462,7 +462,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/FlowDWHClients')]",
+			"name": "[concat(parameters('factoryName'), '/FlowDWHClient')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -543,7 +543,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/FlowDWHMagasins')]",
+			"name": "[concat(parameters('factoryName'), '/FlowDWHMagasin')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -614,7 +614,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/FlowDWHProduits')]",
+			"name": "[concat(parameters('factoryName'), '/FlowDWHProduit')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -842,7 +842,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "FlowDWHClients",
+								"referenceName": "FlowDWHClient",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -868,7 +868,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/FlowDWHClients')]"
+				"[concat(variables('factoryId'), '/dataflows/FlowDWHClient')]"
 			]
 		},
 		{
@@ -891,7 +891,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "FlowDWHMagasins",
+								"referenceName": "FlowDWHMagasin",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -917,7 +917,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/FlowDWHMagasins')]"
+				"[concat(variables('factoryId'), '/dataflows/FlowDWHMagasin')]"
 			]
 		},
 		{
@@ -940,7 +940,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "FlowDWHProduits",
+								"referenceName": "FlowDWHProduit",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -966,7 +966,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/FlowDWHProduits')]"
+				"[concat(variables('factoryId'), '/dataflows/FlowDWHProduit')]"
 			]
 		}
 	]
