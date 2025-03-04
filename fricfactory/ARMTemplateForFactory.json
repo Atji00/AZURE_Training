@@ -2030,6 +2030,80 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/FlowDWHMagasins')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ODS_Magasins",
+								"type": "DatasetReference"
+							},
+							"name": "ODSMagasins"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DWH_Magasins",
+								"type": "DatasetReference"
+							},
+							"name": "DWHMagasins"
+						}
+					],
+					"transformations": [
+						{
+							"name": "UpdateInsertODSRows"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ID_Magasin as string,",
+						"          Nom_Magasin as string,",
+						"          Ville as string,",
+						"          Pays as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> ODSMagasins",
+						"ODSMagasins alterRow(upsertIf(1==1)) ~> UpdateInsertODSRows",
+						"UpdateInsertODSRows sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          MagasinRowID as integer,",
+						"          ID_Magasin as string,",
+						"          Nom_Magasin as string,",
+						"          Ville as string,",
+						"          Pays as string",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:false,",
+						"     upsertable:true,",
+						"     keys:['ID_Magasin'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          ID_Magasin,",
+						"          Nom_Magasin,",
+						"          Ville,",
+						"          Pays",
+						"     )) ~> DWHMagasins"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ODS_Magasins')]",
+				"[concat(variables('factoryId'), '/datasets/DWH_Magasins')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/FlowDWHProduits')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
