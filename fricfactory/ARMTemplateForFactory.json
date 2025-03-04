@@ -1275,6 +1275,55 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DWH_FactDepenses')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "FricSqlDatabase",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DHW(DataWareHouse)-Tables"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "IDDepense",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "IDate",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MagasinRowID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Montant",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Catégorie_Dépense",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "DWH",
+					"table": "Fact_depenses"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/FricSqlDatabase')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DWH_FactVentes')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
