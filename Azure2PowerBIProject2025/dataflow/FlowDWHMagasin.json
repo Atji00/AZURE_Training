@@ -1,5 +1,5 @@
 {
-	"name": "FlowDWHMagasins",
+	"name": "FlowDWHMagasin",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

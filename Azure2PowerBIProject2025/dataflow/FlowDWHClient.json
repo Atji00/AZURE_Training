@@ -1,5 +1,5 @@
 {
-	"name": "FlowDWHClients",
+	"name": "FlowDWHClient",
 	"properties": {
 		"description": "Inject transformed data from ODS table Clients to DWH table clients",
 		"type": "MappingDataFlow",

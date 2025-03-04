@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "FlowDWHProduits",
+						"referenceName": "FlowDWHProduit",
 						"type": "DataFlowReference"
 					},
 					"compute": {

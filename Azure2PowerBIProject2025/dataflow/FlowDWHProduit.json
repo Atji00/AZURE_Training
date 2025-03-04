@@ -1,5 +1,5 @@
 {
-	"name": "FlowDWHProduits",
+	"name": "FlowDWHProduit",
 	"properties": {
 		"description": "Injected transformed data from ODS table Produits to DWH table Produits",
 		"type": "MappingDataFlow",
